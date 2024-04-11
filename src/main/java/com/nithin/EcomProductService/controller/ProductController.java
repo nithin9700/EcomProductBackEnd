@@ -2,8 +2,7 @@ package com.nithin.EcomProductService.controller;
 
 
 import com.nithin.EcomProductService.dto.FakeStoreProductResponseDTO;
-import com.nithin.EcomProductService.entity.Product;
-import com.nithin.EcomProductService.mapper.ProductEntityDTOMapper;
+
 import com.nithin.EcomProductService.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
