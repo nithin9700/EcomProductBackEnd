@@ -14,26 +14,27 @@ import java.util.List;
 public class FakeStoreProductServiceImpl implements ProductService{
 
     @Autowired
-    private FakeStoreClient fakeStoreClient;
+    private FakeStoreClient fakeStoreProductClient;
 
     @Override
     public List<FakeStoreProductResponseDTO> getAllProducts() {
-        List<FakeStoreProductResponseDTO> fakeStoreProducts = fakeStoreClient.getAllProducts();
+        List<FakeStoreProductResponseDTO> fakeStoreProducts = fakeStoreProductClient.getAllProducts();
         return fakeStoreProducts;
     }
 
     @Override
-    public Product getProduct(int productId) {
+    public FakeStoreProductResponseDTO  getProduct(int productId) {
+        FakeStoreProductResponseDTO fakeStoreProductResponseDTO = fakeStoreProductClient.getProductById(productId);
+        return fakeStoreProductResponseDTO;
+    }
+
+    @Override
+    public FakeStoreProductResponseDTO createProduct(Product product) {
         return null;
     }
 
     @Override
-    public Product createProduct(Product product) {
-        return null;
-    }
-
-    @Override
-    public Product updateProduct(Product updatedProduct, int productId) {
+    public FakeStoreProductResponseDTO updateProduct(Product product, int productId) {
         return null;
     }
 
@@ -41,4 +42,6 @@ public class FakeStoreProductServiceImpl implements ProductService{
     public boolean deleteProduct(int productId) {
         return false;
     }
+
+
 }

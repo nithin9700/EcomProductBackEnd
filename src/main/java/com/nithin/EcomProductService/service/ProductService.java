@@ -11,9 +11,9 @@ import java.util.List;
 @Qualifier
 public interface ProductService {
     List<FakeStoreProductResponseDTO> getAllProducts();
-    Product getProduct(int productId);
-    Product createProduct(Product product);
-    Product updateProduct(Product product, int productId);
+    FakeStoreProductResponseDTO  getProduct(int productId);
+    FakeStoreProductResponseDTO  createProduct(Product product);
+    FakeStoreProductResponseDTO  updateProduct(Product product, int productId);
     boolean deleteProduct(int productId);
 
 
