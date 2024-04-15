@@ -1,6 +1,7 @@
 package com.nithin.EcomProductService.controller;
 
 import com.nithin.EcomProductService.dto.FakeStoreCartResponseDTO;
+import com.nithin.EcomProductService.exception.CartNotFoundException;
 import com.nithin.EcomProductService.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class CartController {
     @GetMapping("/cart/{userId}")
     public ResponseEntity getCartForUser(@PathVariable("userId") int userId){
         List<FakeStoreCartResponseDTO> cartResponse = cartService.getUserCart(userId);
+        if(cartResponse == null || cartResponse.isEmpty()){
+            throw new CartNotFoundException("No cart found with id: " + userId);
+        }
         return ResponseEntity.ok(cartResponse);
     }
 }
