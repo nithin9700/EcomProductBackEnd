@@ -1,36 +1,33 @@
 package com.nithin.EcomProductService.service;
 
 
-
-import com.nithin.EcomProductService.client.FakeStoreClient;
 import com.nithin.EcomProductService.dto.FakeStoreProductResponseDTO;
 import com.nithin.EcomProductService.entity.Product;
+import com.nithin.EcomProductService.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("fakestoreProductService")
-public class FakeStoreProductServiceImpl implements ProductService{
-
+@Service("productService")
+public class ProductServiceImpl implements ProductService{
     @Autowired
-    private FakeStoreClient fakeStoreProductClient;
+    private ProductRepository productRepository;
 
     @Override
     public List<FakeStoreProductResponseDTO> getAllProducts() {
-        List<FakeStoreProductResponseDTO> fakeStoreProducts = fakeStoreProductClient.getAllProducts();
-        return fakeStoreProducts;
+        return List.of();
     }
 
     @Override
-    public FakeStoreProductResponseDTO  getProduct(int productId) {
-        FakeStoreProductResponseDTO fakeStoreProductResponseDTO = fakeStoreProductClient.getProductById(productId);
-        return fakeStoreProductResponseDTO;
+    public FakeStoreProductResponseDTO getProduct(int productId) {
+        return null;
     }
 
     @Override
     public Product createProduct(Product product) {
-        return null;
+        productRepository.save(product);
+        return product;
     }
 
     @Override
@@ -42,6 +39,4 @@ public class FakeStoreProductServiceImpl implements ProductService{
     public boolean deleteProduct(int productId) {
         return false;
     }
-
-
 }

@@ -3,14 +3,15 @@ package com.nithin.EcomProductService.controller;
 
 import com.nithin.EcomProductService.dto.FakeStoreProductResponseDTO;
 
+import com.nithin.EcomProductService.entity.Product;
+import com.nithin.EcomProductService.exception.InvalidInputException;
 import com.nithin.EcomProductService.exception.NoProductFoundException;
 import com.nithin.EcomProductService.exception.ProductNotFoundException;
 import com.nithin.EcomProductService.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,25 +19,33 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductService productService; // field injection
-
+    @Qualifier("productService")
+    private ProductService productService;
 
     @GetMapping("/product")
-    public ResponseEntity getAllProducts() {
-        List<FakeStoreProductResponseDTO> fakeStoreProductResponseDTOS = null; //productService.getAllProducts();
-        if(fakeStoreProductResponseDTOS == null) {
-            throw new NoProductFoundException("Product not found");
-        }
-        return ResponseEntity.ok(fakeStoreProductResponseDTOS);
+    public ResponseEntity getAllProducts(){
+        List<FakeStoreProductResponseDTO> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity getProductById(@PathVariable("id") int productId) {
-        if(productId < 1) {
-            throw new ProductNotFoundException("Not product found with id:" + productId);
+    public ResponseEntity getProductById(@PathVariable("id") int id){
+        if(id < 1){
+            throw new InvalidInputException("Input is not correct");
         }
-        List<FakeStoreProductResponseDTO> fakeStoreProductResponseDTOS = productService.getAllProducts();
-        return ResponseEntity.ok(fakeStoreProductResponseDTOS);
+        FakeStoreProductResponseDTO product = productService.getProduct(id);
+        return ResponseEntity.ok(product);
     }
 
+    @GetMapping("/productexception")
+    public ResponseEntity getProductException(){
+        //throw new RandomException("Exception from product");
+        throw new ProductNotFoundException("Product not found");
+    }
+
+    @PostMapping("/product")
+    public ResponseEntity createProduct(@RequestBody Product product){
+        Product savedProduct = productService.createProduct(product);
+        return ResponseEntity.ok(savedProduct);
+    }
 }

@@ -1,13 +1,14 @@
 package com.nithin.EcomProductService.exception;
 
 
+import com.nithin.EcomProductService.controller.CartController;
 import com.nithin.EcomProductService.dto.ExceptionResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice
+@ControllerAdvice(basePackageClasses = CartController.class)
 public class CartControllerExceptionHandler {
 
     @ExceptionHandler(CartNotFoundException.class)

@@ -8,12 +8,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 
-@Qualifier
 public interface ProductService {
     List<FakeStoreProductResponseDTO> getAllProducts();
     FakeStoreProductResponseDTO  getProduct(int productId);
-    FakeStoreProductResponseDTO  createProduct(Product product);
-    FakeStoreProductResponseDTO  updateProduct(Product product, int productId);
+    Product  createProduct(Product product);
+    Product  updateProduct(Product product, int productId);
     boolean deleteProduct(int productId);
 
 

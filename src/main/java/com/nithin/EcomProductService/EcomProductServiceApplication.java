@@ -1,6 +1,8 @@
 package com.nithin.EcomProductService;
 
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
