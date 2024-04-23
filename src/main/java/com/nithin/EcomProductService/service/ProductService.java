@@ -16,5 +16,5 @@ public interface ProductService {
     Product  updateProduct(Product product, UUID productId);
     boolean deleteProduct(UUID productId);
     Product getProductByName(String productName);
-    List<Product> getProductsByRange(int min, int max);
+    List<Product> getProductsByRange(double min, double max);
 }

@@ -1,7 +1,5 @@
 package com.nithin.EcomProductService.service;
 
-
-import com.nithin.EcomProductService.dto.FakeStoreProductResponseDTO;
 import com.nithin.EcomProductService.entity.Product;
 import com.nithin.EcomProductService.exception.ProductNotFoundException;
 import com.nithin.EcomProductService.repositories.ProductRepository;
@@ -39,7 +37,6 @@ public class ProductServiceImpl implements ProductService{
                 () -> new ProductNotFoundException("Product with id " + productId + " not found")
         );
         updateProduct.setProductName(product.getProductName());
-        updateProduct.setProductCategory(product.getProductCategory());
         updateProduct.setProductDescription(product.getProductDescription());
         updateProduct.setProductPrice(product.getProductPrice());
         updateProduct.setProductImageURL(product.getProductImageURL());
@@ -56,11 +53,12 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product getProductByName(String productName) {
-        return productRepository.findByName(productName);
+        return productRepository.findByProductName(productName);
     }
 
     @Override
-    public List<Product> getProductsByRange(int min, int max) {
-        return productRepository.findProductBetweenMinAndMax(min, max);
+    public List<Product> getProductsByRange(double min, double max) {
+        //return productRepository.findProductBetweenMinAndMax(min, max);
+        return null;
     }
 }
