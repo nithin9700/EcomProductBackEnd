@@ -3,11 +3,13 @@ package com.nithin.EcomProductService.service;
 
 import com.nithin.EcomProductService.dto.FakeStoreProductResponseDTO;
 import com.nithin.EcomProductService.entity.Product;
+import com.nithin.EcomProductService.exception.ProductNotFoundException;
 import com.nithin.EcomProductService.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service("productService")
 public class ProductServiceImpl implements ProductService{
@@ -15,28 +17,50 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Override
-    public List<FakeStoreProductResponseDTO> getAllProducts() {
-        return List.of();
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
     @Override
-    public FakeStoreProductResponseDTO getProduct(int productId) {
-        return null;
+    public Product getProduct(UUID productId) {
+        return productRepository.findById(productId).orElseThrow(
+                () -> new ProductNotFoundException("Product with id " + productId + " not found")
+        );
     }
 
     @Override
     public Product createProduct(Product product) {
-        productRepository.save(product);
-        return product;
+        Product product1 = productRepository.save(product);
+        return product1;
+    }
+    @Override
+    public Product updateProduct(Product product, UUID productId) {
+        Product updateProduct = productRepository.findById(productId).orElseThrow(
+                () -> new ProductNotFoundException("Product with id " + productId + " not found")
+        );
+        updateProduct.setProductName(product.getProductName());
+        updateProduct.setProductCategory(product.getProductCategory());
+        updateProduct.setProductDescription(product.getProductDescription());
+        updateProduct.setProductPrice(product.getProductPrice());
+        updateProduct.setProductImageURL(product.getProductImageURL());
+        updateProduct.setProductRating(product.getProductRating());
+        updateProduct.setQuantity(product.getQuantity());
+        return productRepository.save(updateProduct);
     }
 
     @Override
-    public Product updateProduct(Product product, int productId) {
-        return null;
+    public boolean deleteProduct(UUID productId) {
+        productRepository.deleteById(productId);
+        return true;
     }
 
     @Override
-    public boolean deleteProduct(int productId) {
-        return false;
+    public Product getProductByName(String productName) {
+        return productRepository.findByName(productName);
+    }
+
+    @Override
+    public List<Product> getProductsByRange(int min, int max) {
+        return productRepository.findProductBetweenMinAndMax(min, max);
     }
 }

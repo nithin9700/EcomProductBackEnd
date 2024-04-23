@@ -14,38 +14,53 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     @Qualifier("productService")
     private ProductService productService;
 
-    @GetMapping("/product")
+    @GetMapping
     public ResponseEntity getAllProducts(){
-        List<FakeStoreProductResponseDTO> products = productService.getAllProducts();
+        List<Product> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/product/{id}")
-    public ResponseEntity getProductById(@PathVariable("id") int id){
-        if(id < 1){
+    @GetMapping("/{id}")
+    public ResponseEntity getProductById(@PathVariable("id") UUID id){
+        if(id  == null){
             throw new InvalidInputException("Input is not correct");
         }
-        FakeStoreProductResponseDTO product = productService.getProduct(id);
+        Product product = productService.getProduct(id);
+        return ResponseEntity.ok(product);
+    }
+    @PostMapping
+    public ResponseEntity createProduct(@RequestBody Product product){
+        if(product == null){
+            throw new ProductNotFoundException("Product not found");
+        }
+        productService.createProduct(product);
         return ResponseEntity.ok(product);
     }
 
-    @GetMapping("/productexception")
-    public ResponseEntity getProductException(){
-        //throw new RandomException("Exception from product");
-        throw new ProductNotFoundException("Product not found");
+    @PutMapping("/{id}")
+    public ResponseEntity updateProduct(@PathVariable("id") UUID id, @RequestBody Product product){
+        if(id == null){
+            throw new InvalidInputException("Input is not correct");
+        }
+        if(product == null){
+             throw new ProductNotFoundException("Product not found");
+        }
+        Product product1 = productService.updateProduct(product, id);
+        return  ResponseEntity.ok(product1);
     }
 
-    @PostMapping("/product")
-    public ResponseEntity createProduct(@RequestBody Product product){
-        Product savedProduct = productService.createProduct(product);
-        return ResponseEntity.ok(savedProduct);
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteProduct(@PathVariable("id") UUID id){
+        return ResponseEntity.ok(productService.deleteProduct(id));
     }
 }
