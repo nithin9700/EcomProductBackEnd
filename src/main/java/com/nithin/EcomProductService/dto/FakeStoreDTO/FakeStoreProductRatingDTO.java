@@ -1,4 +1,4 @@
-package com.nithin.EcomProductService.dto;
+package com.nithin.EcomProductService.dto.FakeStoreDTO;
 
 import lombok.Getter;
 import lombok.Setter;

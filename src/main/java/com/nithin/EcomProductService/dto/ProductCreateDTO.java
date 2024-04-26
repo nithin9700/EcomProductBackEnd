@@ -1,22 +1,20 @@
 package com.nithin.EcomProductService.dto;
 
-
+import com.nithin.EcomProductService.entity.Category;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.UUID;
 
 
 @Getter
 @Setter
-public class ProductResponseDTO {
-    private UUID productId;
+public class ProductCreateDTO {
     private String productName;
     private String productDescription;
     private double productPrice;
     private String productCategory;
     private String productImageURL;
-    private double productRating;
-    private int quatity;
+    private int quantity;
 
 }

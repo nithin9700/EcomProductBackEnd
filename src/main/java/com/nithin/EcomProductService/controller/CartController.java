@@ -1,6 +1,6 @@
 package com.nithin.EcomProductService.controller;
 
-import com.nithin.EcomProductService.dto.FakeStoreCartResponseDTO;
+import com.nithin.EcomProductService.dto.FakeStoreDTO.FakeStoreCartResponseDTO;
 import com.nithin.EcomProductService.exception.CartNotFoundException;
 import com.nithin.EcomProductService.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;

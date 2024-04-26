@@ -1,7 +1,6 @@
 package com.nithin.EcomProductService.service;
 
-import com.nithin.EcomProductService.dto.FakeStoreCartResponseDTO;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.nithin.EcomProductService.dto.FakeStoreDTO.FakeStoreCartResponseDTO;
 
 import java.util.List;
 

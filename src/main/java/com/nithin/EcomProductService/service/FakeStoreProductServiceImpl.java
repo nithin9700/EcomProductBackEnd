@@ -3,7 +3,7 @@ package com.nithin.EcomProductService.service;
 
 
 import com.nithin.EcomProductService.client.FakeStoreClient;
-import com.nithin.EcomProductService.dto.FakeStoreProductResponseDTO;
+import com.nithin.EcomProductService.dto.FakeStoreDTO.FakeStoreProductResponseDTO;
 import com.nithin.EcomProductService.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

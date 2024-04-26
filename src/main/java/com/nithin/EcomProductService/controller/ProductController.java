@@ -1,11 +1,10 @@
 package com.nithin.EcomProductService.controller;
 
 
-import com.nithin.EcomProductService.dto.FakeStoreProductResponseDTO;
-
+import com.nithin.EcomProductService.dto.ProductCreateDTO;
+import com.nithin.EcomProductService.dto.ProductResponseDTO;
 import com.nithin.EcomProductService.entity.Product;
 import com.nithin.EcomProductService.exception.InvalidInputException;
-import com.nithin.EcomProductService.exception.NoProductFoundException;
 import com.nithin.EcomProductService.exception.ProductNotFoundException;
 import com.nithin.EcomProductService.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,26 +24,26 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity getAllProducts(){
-        List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts(){
+        List<ProductResponseDTO> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getProductById(@PathVariable("id") UUID id){
+    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable("id") UUID id){
         if(id  == null){
             throw new InvalidInputException("Input is not correct");
         }
-        Product product = productService.getProduct(id);
-        return ResponseEntity.ok(product);
+
+        return ResponseEntity.ok(productService.getProduct(id));
     }
     @PostMapping
-    public ResponseEntity createProduct(@RequestBody Product product){
-        if(product == null){
+    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductCreateDTO ProductCreateDTO){
+        if(ProductCreateDTO == null){
             throw new ProductNotFoundException("Product not found");
         }
-        productService.createProduct(product);
-        return ResponseEntity.ok(product);
+        ProductResponseDTO productResponseDTO = productService.createProduct(ProductCreateDTO);
+        return ResponseEntity.ok(productResponseDTO);
     }
 
     @PutMapping("/{id}")
@@ -55,8 +54,8 @@ public class ProductController {
         if(product == null){
              throw new ProductNotFoundException("Product not found");
         }
-        Product product1 = productService.updateProduct(product, id);
-        return  ResponseEntity.ok(product1);
+        //Product product1 = productService.updateProduct(product, id);
+        return  null; //ResponseEntity.ok(product1);
     }
 
     @DeleteMapping("/{id}")

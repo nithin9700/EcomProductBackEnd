@@ -1,8 +1,8 @@
 package com.nithin.EcomProductService.client;
 
 
-import com.nithin.EcomProductService.dto.FakeStoreCartResponseDTO;
-import com.nithin.EcomProductService.dto.FakeStoreProductResponseDTO;
+import com.nithin.EcomProductService.dto.FakeStoreDTO.FakeStoreCartResponseDTO;
+import com.nithin.EcomProductService.dto.FakeStoreDTO.FakeStoreProductResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
