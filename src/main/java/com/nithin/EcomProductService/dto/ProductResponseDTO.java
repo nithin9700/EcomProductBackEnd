@@ -17,6 +17,6 @@ public class ProductResponseDTO {
     private String productCategory;
     private String productImageURL;
     private double productRating;
-    private int quatity;
+    private int quantity;
 
 }

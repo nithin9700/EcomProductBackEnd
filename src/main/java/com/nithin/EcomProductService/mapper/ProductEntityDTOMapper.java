@@ -1,6 +1,6 @@
 package com.nithin.EcomProductService.mapper;
 
-import com.nithin.EcomProductService.dto.ProductCreateDTO;
+import com.nithin.EcomProductService.dto.ProductRequestDTO;
 import com.nithin.EcomProductService.dto.ProductResponseDTO;
 import com.nithin.EcomProductService.entity.Product;
 
@@ -15,17 +15,19 @@ public class ProductEntityDTOMapper {
         productResponseDTO.setProductImageURL(product.getProductImageURL());
         productResponseDTO.setProductRating(product.getProductRating());
         productResponseDTO.setProductCategory(product.getProductCategory().getName());
+        productResponseDTO.setQuantity(product.getQuantity());
 
         return productResponseDTO;
     }
-    public static Product productResponseDTOToProduct(ProductCreateDTO productCreateDTO) {
+    public static Product productResponseDTOToProduct(ProductRequestDTO productRequestDTO) {
         Product product = new Product();
-        product.setProductName(productCreateDTO.getProductName());
-        product.setProductDescription(productCreateDTO.getProductDescription());
-        product.setProductPrice(productCreateDTO.getProductPrice());
-        product.setProductImageURL(productCreateDTO.getProductImageURL());
+        product.setProductName(productRequestDTO.getProductName());
+        product.setProductDescription(productRequestDTO.getProductDescription());
+        product.setProductPrice(productRequestDTO.getProductPrice());
+        product.setProductImageURL(productRequestDTO.getProductImageURL());
         product.setProductRating(0);
-        product.setQuantity(productCreateDTO.getQuantity());
+        product.setQuantity(productRequestDTO.getQuantity());
+        product.setProductCategory(product.getProductCategory());
         return product;
     }
 }

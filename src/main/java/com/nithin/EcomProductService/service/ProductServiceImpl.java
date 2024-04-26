@@ -1,6 +1,6 @@
 package com.nithin.EcomProductService.service;
 
-import com.nithin.EcomProductService.dto.ProductCreateDTO;
+import com.nithin.EcomProductService.dto.ProductRequestDTO;
 import com.nithin.EcomProductService.dto.ProductResponseDTO;
 import com.nithin.EcomProductService.entity.Category;
 import com.nithin.EcomProductService.entity.Product;
@@ -42,28 +42,36 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponseDTO createProduct(ProductCreateDTO productCreateDTO) {
-        Product product = ProductEntityDTOMapper.productResponseDTOToProduct(productCreateDTO);
-        Category category = categoryRepository.findByName(productCreateDTO.getProductCategory());
+    public ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO) {
+        Product product = ProductEntityDTOMapper.productResponseDTOToProduct(productRequestDTO);
+        Category category = categoryRepository.findByName(productRequestDTO.getProductCategory());
         if(category == null) {
-            throw new CategoryNotFoundException("Category with name " + productCreateDTO.getProductCategory() + " not found");
+            throw new CategoryNotFoundException("Category with name " + productRequestDTO.getProductCategory() + " not found");
         }
         product.setProductCategory(category);
         Product savedProduct = productRepository.save(product);
         return ProductEntityDTOMapper.productToProductResponseDTO(savedProduct);
     }
     @Override
-    public ProductResponseDTO updateProduct(Product product, UUID productId) {
+    public ProductResponseDTO updateProduct(ProductRequestDTO productRequestDTO, UUID productId) {
         Product updateProduct = productRepository.findById(productId).orElseThrow(
                 () -> new ProductNotFoundException("Product with id " + productId + " not found")
         );
+        Product product = ProductEntityDTOMapper.productResponseDTOToProduct(productRequestDTO);
+        Category category = categoryRepository.findByName(productRequestDTO.getProductCategory());
+        if(category == null) {
+            throw new CategoryNotFoundException("Category with name " + productRequestDTO.getProductCategory() + " not found");
+        }
+        product.setProductCategory(category);
         updateProduct.setProductName(product.getProductName());
         updateProduct.setProductDescription(product.getProductDescription());
         updateProduct.setProductPrice(product.getProductPrice());
         updateProduct.setProductImageURL(product.getProductImageURL());
         updateProduct.setProductRating(product.getProductRating());
         updateProduct.setQuantity(product.getQuantity());
-        return ProductEntityDTOMapper.productToProductResponseDTO(productRepository.save(updateProduct));
+        updateProduct.setProductCategory(product.getProductCategory());
+        Product savedProduct = productRepository.save(updateProduct);
+        return ProductEntityDTOMapper.productToProductResponseDTO(savedProduct);
     }
 
     @Override
