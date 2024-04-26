@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CartService {
     List<FakeStoreCartResponseDTO> getUserCart(int id);
+
 }
