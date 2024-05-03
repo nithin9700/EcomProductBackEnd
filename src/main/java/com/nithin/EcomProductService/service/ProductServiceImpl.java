@@ -29,7 +29,6 @@ public class ProductServiceImpl implements ProductService{
         List<ProductResponseDTO> productResponseDTOs = new ArrayList<>();
         for (Product product : products)
             productResponseDTOs.add(ProductEntityDTOMapper.productToProductResponseDTO(product));
-
         return productResponseDTOs;
     }
 
