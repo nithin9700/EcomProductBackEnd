@@ -11,7 +11,6 @@ import java.util.UUID;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID> {
     Product findByProductName(String name);
-    //List<Product> findProductBetweenMinAndMax(int min, int max);
     List<Product> findAllProductsByProductCategory(Category category);
     List<Product> findByProductPriceBetween(double min, double max);
 
