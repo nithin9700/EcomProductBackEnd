@@ -4,11 +4,11 @@ package com.nithin.EcomProductService.controller;
 import com.nithin.EcomProductService.dto.CategoryCreateRequestDTO;
 import com.nithin.EcomProductService.dto.CategoryCreateResponseDTO;
 import com.nithin.EcomProductService.service.CategoryService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,6 +17,7 @@ public class CategoryController {
     @Autowired
     @Qualifier("categoryService")
     private CategoryService categoryService;
+
 
     @PostMapping
     public ResponseEntity<CategoryCreateResponseDTO> createCategory(@RequestBody CategoryCreateRequestDTO categoryCreateRequestDTO) {
