@@ -8,7 +8,6 @@ public class ProductEntityDTOMapper {
 
     public static ProductResponseDTO productToProductResponseDTO(Product product) {
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
-        productResponseDTO.setProductId(product.getId());
         productResponseDTO.setProductName(product.getProductName());
         productResponseDTO.setProductDescription(product.getProductDescription());
         productResponseDTO.setProductPrice(product.getProductPrice());
@@ -16,6 +15,7 @@ public class ProductEntityDTOMapper {
         productResponseDTO.setProductRating(product.getProductRating());
         productResponseDTO.setProductCategory(product.getProductCategory().getName());
         productResponseDTO.setQuantity(product.getQuantity());
+        productResponseDTO.setProductId(product.getId());
 
         return productResponseDTO;
     }
@@ -27,7 +27,6 @@ public class ProductEntityDTOMapper {
         product.setProductImageURL(productRequestDTO.getProductImageURL());
         product.setProductRating(0);
         product.setQuantity(productRequestDTO.getQuantity());
-        product.setProductCategory(product.getProductCategory());
         return product;
     }
 }

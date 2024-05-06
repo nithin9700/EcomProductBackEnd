@@ -5,8 +5,10 @@ import com.nithin.EcomProductService.dto.ProductRequestDTO;
 import com.nithin.EcomProductService.dto.ProductResponseDTO;
 import com.nithin.EcomProductService.entity.Category;
 import com.nithin.EcomProductService.entity.Product;
+import com.nithin.EcomProductService.exception.CategoryNotFoundException;
 import com.nithin.EcomProductService.exception.ProductNotFoundException;
 import com.nithin.EcomProductService.mapper.ProductEntityDTOMapper;
+import com.nithin.EcomProductService.repositories.CategoryRepository;
 import com.nithin.EcomProductService.repositories.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,20 +16,22 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import static org.mockito.ArgumentMatchers.any;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class ProductServiceImpTest {
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private CategoryRepository categoryRepository;
 
     @InjectMocks
-    private ProductServiceImpl productService;
+    private ProductServiceImpl productServiceImpl;
 
     @BeforeEach
     public void setup(){
@@ -35,12 +39,6 @@ public class ProductServiceImpTest {
     }
 
 
-    @Test
-    public void getProductsException(){
-        UUID id = UUID.randomUUID();
-        when(productRepository.findById(id)).thenReturn(Optional.empty());
-        Assertions.assertThrows(ProductNotFoundException.class, () -> productService.getProduct(id));
-    }
     @Test
     public void getProduct(){
         ProductRequestDTO productRequestDTO = new ProductRequestDTO();
@@ -54,9 +52,9 @@ public class ProductServiceImpTest {
         UUID id = UUID.randomUUID();
 
         when(productRepository.findById(id)).thenReturn(product);
-        productService.getProduct(id);
+        productServiceImpl.getProduct(id);
 
-        Assertions.assertEquals(productRequestDTO.getProductName(), product.get().getProductName());
+        assertEquals(productRequestDTO.getProductName(), product.get().getProductName());
     }
 
     private Optional<Product> getProduct(ProductRequestDTO productRequestDTO) {
@@ -82,9 +80,9 @@ public class ProductServiceImpTest {
         }
         //ACT
         when(productRepository.findAll()).thenReturn(products);
-        List<ProductResponseDTO> actualProductResponseDTOS = productService.getAllProducts();
+        List<ProductResponseDTO> actualProductResponseDTOS = productServiceImpl.getAllProducts();
         //ASSERT
-        Assertions.assertEquals(expectedProductResponseDTOS.size(), actualProductResponseDTOS.size());
+        assertEquals(expectedProductResponseDTOS.size(), actualProductResponseDTOS.size());
 
     }
     public List<Product> products() {
@@ -101,6 +99,51 @@ public class ProductServiceImpTest {
         return products;
     }
 
+    @Test
+    public void createProductCategoryNotFound() {
+        ProductRequestDTO productRequestDTO = new ProductRequestDTO();
+        productRequestDTO.setProductCategory("Electronics");
+
+        when(categoryRepository.findByName("Electronics")).thenReturn(null);
+
+        Assertions.assertThrows(CategoryNotFoundException.class, () -> {
+            productServiceImpl.createProduct(productRequestDTO);
+        });
+    }
+    @Test
+    public void getProductException(){
+        Assertions.assertThrows(ProductNotFoundException.class, () -> {
+            productServiceImpl.getProduct(UUID.randomUUID());
+        });
+    }
+    @Test
+    public void createProduct() {
+        ProductRequestDTO productRequestDTO = new ProductRequestDTO();
+        productRequestDTO.setProductName("Product Name");
+        productRequestDTO.setProductDescription("Product Description");
+        productRequestDTO.setProductImageURL("Product Image URL");
+        productRequestDTO.setProductPrice(1000);
+        productRequestDTO.setQuantity(100);
+        productRequestDTO.setProductCategory("Electronics");
+
+        Category category = new Category();
+        category.setName(productRequestDTO.getProductCategory());
+        Product product = ProductEntityDTOMapper.productResponseDTOToProduct(productRequestDTO);
+        product.setProductCategory(category);
+
+        when(categoryRepository.findByName(productRequestDTO.getProductCategory())).thenReturn(category);
+        when(productRepository.save(any(Product.class))).thenReturn(product);
+
+        ProductResponseDTO result = productServiceImpl.createProduct(productRequestDTO);
+
+        assertEquals(result.getProductName(), productRequestDTO.getProductName());
+        assertEquals(result.getProductDescription(), productRequestDTO.getProductDescription());
+        assertEquals(result.getProductImageURL(), productRequestDTO.getProductImageURL());
+        assertEquals(result.getProductPrice(), productRequestDTO.getProductPrice());
+        assertEquals(result.getQuantity(), productRequestDTO.getQuantity());
+        assertEquals(result.getProductCategory(), productRequestDTO.getProductCategory());
+
+    }
 
 
 }

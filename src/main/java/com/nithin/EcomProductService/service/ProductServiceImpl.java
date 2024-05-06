@@ -9,6 +9,7 @@ import com.nithin.EcomProductService.exception.ProductNotFoundException;
 import com.nithin.EcomProductService.mapper.ProductEntityDTOMapper;
 import com.nithin.EcomProductService.repositories.CategoryRepository;
 import com.nithin.EcomProductService.repositories.ProductRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,8 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
+    private  CategoryRepository categoryRepository;
+
 
     @Override
     public List<ProductResponseDTO> getAllProducts() {
@@ -49,6 +51,7 @@ public class ProductServiceImpl implements ProductService{
         }
         product.setProductCategory(category);
         Product savedProduct = productRepository.save(product);
+
         return ProductEntityDTOMapper.productToProductResponseDTO(savedProduct);
     }
     @Override
@@ -81,7 +84,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductResponseDTO getProductByName(String productName) {
-        return null;
+        Product product = productRepository.findByProductName(productName);
+        return ProductEntityDTOMapper.productToProductResponseDTO(product);
     }
 
     @Override
