@@ -38,7 +38,6 @@ public class ProductServiceImpTest {
         MockitoAnnotations.initMocks(this); // not required nowadays. It initialises and adds all the required mocks
     }
 
-
     @Test
     public void getProduct(){
         ProductRequestDTO productRequestDTO = new ProductRequestDTO();
@@ -85,6 +84,7 @@ public class ProductServiceImpTest {
         assertEquals(expectedProductResponseDTOS.size(), actualProductResponseDTOS.size());
 
     }
+
     public List<Product> products() {
         Product product1 = new Product();
         product1.setProductName("Product Name1");
@@ -110,12 +110,14 @@ public class ProductServiceImpTest {
             productServiceImpl.createProduct(productRequestDTO);
         });
     }
+
     @Test
     public void getProductException(){
         Assertions.assertThrows(ProductNotFoundException.class, () -> {
             productServiceImpl.getProduct(UUID.randomUUID());
         });
     }
+
     @Test
     public void createProduct() {
         ProductRequestDTO productRequestDTO = new ProductRequestDTO();
@@ -144,6 +146,59 @@ public class ProductServiceImpTest {
         assertEquals(result.getProductCategory(), productRequestDTO.getProductCategory());
 
     }
+    @Test
+    public void updateProduct() {
+        ProductRequestDTO productRequestDTO = new ProductRequestDTO();
+        productRequestDTO.setProductName("Product Name");
+        productRequestDTO.setProductDescription("Product Description");
+        productRequestDTO.setProductImageURL("Product Image URL");
+        productRequestDTO.setProductPrice(1000);
+        productRequestDTO.setQuantity(100);
+        productRequestDTO.setProductCategory("Electronics");
 
+        Category category = new Category();
+        category.setName(productRequestDTO.getProductCategory());
+        Product product = ProductEntityDTOMapper.productResponseDTOToProduct(productRequestDTO);
+        product.setProductCategory(category);
 
+        UUID productId = UUID.randomUUID();
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(categoryRepository.findByName(productRequestDTO.getProductCategory())).thenReturn(category);
+        when(productRepository.save(any(Product.class))).thenReturn(product);
+
+        ProductResponseDTO result = productServiceImpl.updateProduct(productRequestDTO, productId);
+
+        assertEquals(result.getProductName(), productRequestDTO.getProductName());
+        assertEquals(result.getProductDescription(), productRequestDTO.getProductDescription());
+        assertEquals(result.getProductImageURL(), productRequestDTO.getProductImageURL());
+        assertEquals(result.getProductPrice(), productRequestDTO.getProductPrice());
+        assertEquals(result.getQuantity(), productRequestDTO.getQuantity());
+        assertEquals(result.getProductCategory(), productRequestDTO.getProductCategory());
+    }
+
+    @Test
+    public void updateProductNotFound() {
+        Assertions.assertThrows(ProductNotFoundException.class, () -> {
+            productServiceImpl.updateProduct(new ProductRequestDTO(), UUID.randomUUID());
+        });
+    }
+
+    @Test
+    public void updateCategoryNotFound() {
+        ProductRequestDTO productRequestDTO = new ProductRequestDTO();
+        productRequestDTO.setProductName("Product Name");
+        productRequestDTO.setProductDescription("Product Description");
+        productRequestDTO.setProductImageURL("Product Image URL");
+        productRequestDTO.setProductPrice(1000);
+        productRequestDTO.setQuantity(100);
+        productRequestDTO.setProductCategory("Electronics");
+        Product product =ProductEntityDTOMapper.productResponseDTOToProduct(productRequestDTO);
+        when(categoryRepository.findByName("Electronics")).thenReturn(null);
+        UUID productId = UUID.randomUUID();
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        Assertions.assertThrows(CategoryNotFoundException.class, () -> {
+            productServiceImpl.updateProduct(productRequestDTO, productId);
+        });
+    }
 }
