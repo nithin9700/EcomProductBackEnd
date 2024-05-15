@@ -9,7 +9,7 @@ import java.util.UUID;
 
 
 public interface ProductService {
-    List<ProductResponseDTO> getAllProducts();
+    List<ProductResponseDTO> getAllProducts(String token);
     ProductResponseDTO getProduct(UUID productId);
     ProductResponseDTO  createProduct(ProductRequestDTO productRequestDTO);
     ProductResponseDTO  updateProduct(ProductRequestDTO productRequestDTO, UUID productId);

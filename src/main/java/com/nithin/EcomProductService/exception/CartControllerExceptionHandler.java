@@ -16,4 +16,9 @@ public class CartControllerExceptionHandler {
         ExceptionResponseDTO exceptionResponseDTO = new ExceptionResponseDTO(404, e.getMessage());
         return new ResponseEntity(exceptionResponseDTO, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity handleException(AuthenticationException e) {
+        ExceptionResponseDTO exceptionResponseDTO = new ExceptionResponseDTO(401, e.getMessage());
+        return new ResponseEntity<>(exceptionResponseDTO, HttpStatus.UNAUTHORIZED);
+    }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CategoryService {
     CategoryCreateResponseDTO createCategory(CategoryCreateRequestDTO categoryCreateRequestDTO);
-    List<CategoryCreateResponseDTO> getAllCategories();
+    List<CategoryCreateResponseDTO> getAllCategories(String token);
 }

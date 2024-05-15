@@ -26,7 +26,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryCreateResponseDTO>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
+    public ResponseEntity<List<CategoryCreateResponseDTO>> getAllCategories(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(categoryService.getAllCategories(token));
     }
 }

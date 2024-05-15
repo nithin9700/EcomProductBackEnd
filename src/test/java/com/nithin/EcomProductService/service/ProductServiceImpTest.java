@@ -79,7 +79,8 @@ public class ProductServiceImpTest {
         }
         //ACT
         when(productRepository.findAll()).thenReturn(products);
-        List<ProductResponseDTO> actualProductResponseDTOS = productServiceImpl.getAllProducts();
+        String token = "";
+        List<ProductResponseDTO> actualProductResponseDTOS = productServiceImpl.getAllProducts(token);
         //ASSERT
         assertEquals(expectedProductResponseDTOS.size(), actualProductResponseDTOS.size());
 

@@ -22,4 +22,10 @@ public class ProductControllerExceptionHandler {
         ExceptionResponseDTO exceptionResponseDTO = new ExceptionResponseDTO(400, e.getMessage());
         return new ResponseEntity<>(exceptionResponseDTO, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity handleException(AuthenticationException e) {
+        ExceptionResponseDTO exceptionResponseDTO = new ExceptionResponseDTO(401, e.getMessage());
+        return new ResponseEntity<>(exceptionResponseDTO, HttpStatus.UNAUTHORIZED);
+    }
 }

@@ -1,9 +1,11 @@
 package com.nithin.EcomProductService.controller;
 
 
+import com.nithin.EcomProductService.client.UserTokenAuthentication;
 import com.nithin.EcomProductService.dto.ProductRequestDTO;
 import com.nithin.EcomProductService.dto.ProductResponseDTO;
 import com.nithin.EcomProductService.entity.Product;
+import com.nithin.EcomProductService.exception.AuthenticationException;
 import com.nithin.EcomProductService.exception.InvalidInputException;
 import com.nithin.EcomProductService.exception.ProductNotFoundException;
 import com.nithin.EcomProductService.service.ProductService;
@@ -21,12 +23,15 @@ import java.util.UUID;
 public class ProductController {
 
     @Autowired
+    private UserTokenAuthentication userTokenAuthentication;
+    @Autowired
     @Qualifier("productService")
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts(){
-        List<ProductResponseDTO> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts(@RequestHeader("Authorization") String token){
+
+        List<ProductResponseDTO> products = productService.getAllProducts(token);
         return ResponseEntity.ok(products);
     }
 
@@ -72,4 +77,6 @@ public class ProductController {
         }
         return ResponseEntity.ok(products);
     }
+
+
 }

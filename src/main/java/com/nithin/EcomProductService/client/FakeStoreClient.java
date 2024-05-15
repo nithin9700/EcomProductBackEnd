@@ -45,7 +45,7 @@ public class FakeStoreClient {
     public List<FakeStoreCartResponseDTO> getUserCart(int userId) {
         RestTemplate restTemplate = new RestTemplateBuilder().build();
 
-        String url = fakeStoreAPIBaseUrl.concat( cartURL).concat(String.valueOf(userId));
+        String url = fakeStoreAPIBaseUrl.concat(cartURL).concat(String.valueOf(userId));
 
         ResponseEntity<FakeStoreCartResponseDTO[]> fakeStoreCartResponseDTOS =
                 restTemplate.getForEntity(url, FakeStoreCartResponseDTO[].class);

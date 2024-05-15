@@ -1,9 +1,11 @@
 package com.nithin.EcomProductService.service;
 
+import com.nithin.EcomProductService.client.UserTokenAuthentication;
 import com.nithin.EcomProductService.dto.ProductRequestDTO;
 import com.nithin.EcomProductService.dto.ProductResponseDTO;
 import com.nithin.EcomProductService.entity.Category;
 import com.nithin.EcomProductService.entity.Product;
+import com.nithin.EcomProductService.exception.AuthenticationException;
 import com.nithin.EcomProductService.exception.CategoryNotFoundException;
 import com.nithin.EcomProductService.exception.ProductNotFoundException;
 import static com.nithin.EcomProductService.mapper.ProductEntityDTOMapper.productResponseDTOToProduct;
@@ -21,16 +23,22 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final UserTokenAuthentication userTokenAuthentication;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
+                              UserTokenAuthentication userTokenAuthentication) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.userTokenAuthentication = userTokenAuthentication;
     }
 
 
     @Override
-    public List<ProductResponseDTO> getAllProducts() {
+    public List<ProductResponseDTO> getAllProducts(String token) {
+        if(!validateToken(token)) {
+            throw new AuthenticationException();
+        }
         List<Product> products =  productRepository.findAll();
         List<ProductResponseDTO> productResponseDTOs = new ArrayList<>();
         for (Product product : products)
@@ -99,6 +107,11 @@ public class ProductServiceImpl implements ProductService{
         for (Product product : products)
             productResponseDTOs.add(productToProductResponseDTO(product));
         return productResponseDTOs;
-
+    }
+    public boolean validateToken(String token) {
+        if (!userTokenAuthentication.isValid(token)) {
+            return false;
+        }
+        return true;
     }
 }
